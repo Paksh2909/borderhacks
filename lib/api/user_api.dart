@@ -1,38 +1,20 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hackathon_app/models/user.dart';
 import 'package:hackathon_app/notifier/user_notifier.dart';
-import 'package:http/http.dart' as http;
 
-getUserFromFirestore(FirebaseUser user, UserNotifier userNotifier) async {
-  final firestoreInstance = Firestore.instance;
-  String token = (await user.getIdToken(refresh: true)).token;
-  // http.Response response = await http.get(
-  //   url,
-  //   headers: {
-  //     "token": token,
-  //     "uid": user.uid,
-  //   },
-  // );
-  // var body = jsonDecode(response.body);
-  // User firestoreUser = User.fromJson(body);
-  // userNotifier.setUser(firestoreUser);
+final firestoreInstance = Firestore.instance;
+
+getUserFromFirestore(User firebaseUser, UserNotifier userNotifier) async {
+  DocumentSnapshot userDoc =
+      await firestoreInstance.collection("User").doc(firebaseUser.uid).get();
+  CustomUser user = CustomUser.fromJson(userDoc.data());
+  userNotifier.setUser(user);
 }
 
 createUserInFirestore(FirebaseUser user) async {
-  String token = (await user.getIdToken(refresh: true)).token;
-
-  // await http.post(url,
-  //     headers: {
-  //       "token": token,
-  //       "uid": user.uid,
-  //     },
-  //     body: jsonEncode({
-  //       "name": user.displayName,
-  //       "avatar": user.photoUrl,
-  //       "email": user.email,
-  //       "phone": user.phoneNumber,
-  //     }));
+  firestoreInstance.collection("User").document(user.uid).setData({
+    "name": user.displayName,
+    "email": user.email,
+  });
 }

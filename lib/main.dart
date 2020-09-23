@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon_app/home/email_not_verified.dart';
+import 'package:hackathon_app/home/home_page.dart';
+import 'package:hackathon_app/landingpage/landing_page.dart';
+import 'package:hackathon_app/notifier/auth_notifier.dart';
+import 'package:hackathon_app/notifier/user_notifier.dart';
+import 'package:provider/provider.dart';
 
-import 'home/home_page.dart';
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-void main() {
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AuthNotifier()),
+        ChangeNotifierProvider(create: (context) => UserNotifier()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -11,9 +25,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Dem',
+      title: 'Medicino',
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: Consumer<AuthNotifier>(
+        builder: (context, notifier, child) {
+          if (notifier.user != null) {
+            if (notifier.user.email != null && notifier.user.email.isNotEmpty) {
+              return notifier.user.emailVerified
+                  ? HomePage()
+                  : EmailNotVerifiedPage();
+            } else {
+              return HomePage();
+            }
+          } else {
+            return LandingPage();
+          }
+        },
+      ),
     );
   }
 }

@@ -2,12 +2,13 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hackathon_app/api/user_api.dart';
 import 'package:hackathon_app/notifier/auth_notifier.dart';
 
 login(String email, String password, AuthNotifier authNotifier) async {
   try {
     authNotifier.setLoading(true);
-    AuthResult authResult = await FirebaseAuth.instance
+    UserCredential authResult = await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password)
         .catchError((error) => handleErrors(error, authNotifier));
     if (authResult != null) {
@@ -31,20 +32,19 @@ signUp(String email, String password, String name,
     AuthNotifier authNotifier) async {
   try {
     authNotifier.setLoading(true);
-    AuthResult authResult = await FirebaseAuth.instance
+    UserCredential authResult = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password)
         .catchError((error) => handleErrors(error, authNotifier));
     if (authResult != null) {
       authNotifier.setError('');
-      UserUpdateInfo updateInfo = UserUpdateInfo();
-      updateInfo.displayName = name;
-      FirebaseUser firebaseUser = authResult.user;
+
+      User firebaseUser = authResult.user;
       if (firebaseUser != null) {
-        await firebaseUser.updateProfile(updateInfo);
+        await firebaseUser.updateProfile(displayName: name);
         await firebaseUser.reload();
         await firebaseUser.sendEmailVerification();
-        FirebaseUser user = await FirebaseAuth.instance.currentUser();
-        // await createUserInFirestore(user);
+        FirebaseUser user = FirebaseAuth.instance.currentUser;
+        await createUserInFirestore(user);
         authNotifier.setLoading(false);
       }
       authNotifier.setLoading(false);
@@ -72,7 +72,7 @@ googleSignIn(AuthNotifier authNotifier) async {
     final FirebaseUser user =
         (await _auth.signInWithCredential(credential)).user;
     if (user != null) {
-      // await createUserInFirestore(user);
+      await createUserInFirestore(user);
     }
     authNotifier.setError('');
     authNotifier.setUser(user);
@@ -92,10 +92,10 @@ googleSignIn(AuthNotifier authNotifier) async {
 
 signIn(AuthCredential authCredentials, AuthNotifier authNotifier) async {
   authNotifier.setLoading(true);
-  AuthResult authResult =
+  UserCredential authResult =
       await FirebaseAuth.instance.signInWithCredential(authCredentials);
   FirebaseUser user = authResult.user;
-  // await createUserInFirestore(user);
+  await createUserInFirestore(user);
   authNotifier.setUser(user);
   authNotifier.setError('');
   authNotifier.setLoading(false);
@@ -109,14 +109,14 @@ signOut(AuthNotifier authNotifier) async {
 }
 
 initializeCurrentUser(AuthNotifier authNotifier) async {
-  FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
+  User currentUser = await FirebaseAuth.instance.currentUser;
   if (currentUser != null) {
     authNotifier.setUser(currentUser);
   }
 }
 
 resendEmail() async {
-  FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
+  User currentUser = await FirebaseAuth.instance.currentUser;
   if (currentUser != null) {
     currentUser.sendEmailVerification();
   }
@@ -200,19 +200,19 @@ String handleForgotPasswordErrors(error) {
 
 Future<bool> checkEmailVerifiedFromFirebase(AuthNotifier authNotifier) async {
   authNotifier.setLoading(true);
-  FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
+  User currentUser = FirebaseAuth.instance.currentUser;
   currentUser.reload();
-  FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
-  if (firebaseUser.isEmailVerified) {
+  User firebaseUser = FirebaseAuth.instance.currentUser;
+  if (firebaseUser.emailVerified) {
     authNotifier.setUser(firebaseUser);
   }
   authNotifier.setLoading(false);
-  return firebaseUser.isEmailVerified;
+  return firebaseUser.emailVerified;
 }
 
 deleteUser(AuthNotifier authNotifier) async {
   authNotifier.setLoading(true);
-  FirebaseUser user = await FirebaseAuth.instance.currentUser();
+  User user = FirebaseAuth.instance.currentUser;
   await user.delete();
   authNotifier.setUser(null);
   authNotifier.setError('');

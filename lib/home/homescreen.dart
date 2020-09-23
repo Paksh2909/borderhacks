@@ -1,7 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/ps609/AndroidStudioProjects/hackathon_app/lib/globalconstants/constants.dart';
+import 'package:hackathon_app/api/user_api.dart';
+import 'package:hackathon_app/notifier/auth_notifier.dart';
+import 'package:hackathon_app/notifier/user_notifier.dart';
 import 'package:hackathon_app/pages/doctor_detail.dart';
+import 'package:provider/provider.dart';
+
+import 'file:///C:/Users/ps609/AndroidStudioProjects/hackathon_app/lib/globalconstants/constants.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -26,9 +31,24 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _foundDoc = false;
 
   @override
+  void initState() {
+    setUser();
+    super.initState();
+  }
+
+  setUser() async {
+    AuthNotifier authNotifier =
+        Provider.of<AuthNotifier>(context, listen: false);
+    UserNotifier userNotifier =
+        Provider.of<UserNotifier>(context, listen: false);
+    await getUserFromFirestore(authNotifier.user, userNotifier);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -45,6 +65,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _buildAppBar(double height, double width) {
+    UserNotifier userNotifier =
+    Provider.of<UserNotifier>(context, listen: false);
+    AuthNotifier authNotifier =
+    Provider.of<AuthNotifier>(context, listen: false);
     return Container(
       height: height * 0.20,
       width: width,
@@ -71,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Padding(
                 padding: EdgeInsets.only(left: width * 0.15),
                 child: Text(
-                  "Pakshal",
+                  userNotifier.user.name,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 30,
