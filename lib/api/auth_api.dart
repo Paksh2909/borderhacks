@@ -13,9 +13,10 @@ login(String email, String password, AuthNotifier authNotifier) async {
         .catchError((error) => handleErrors(error, authNotifier));
     if (authResult != null) {
       authNotifier.setError('');
-      FirebaseUser firebaseUser = authResult.user;
+      User firebaseUser = authResult.user;
       if (firebaseUser != null) {
         authNotifier.setUser(firebaseUser);
+
         authNotifier.setLoading(false);
       }
       authNotifier.setLoading(false);
@@ -28,7 +29,7 @@ login(String email, String password, AuthNotifier authNotifier) async {
   }
 }
 
-signUp(String email, String password, String name,
+signUp(String email, String password, String name, String gender,
     AuthNotifier authNotifier) async {
   try {
     authNotifier.setLoading(true);
@@ -43,8 +44,8 @@ signUp(String email, String password, String name,
         await firebaseUser.updateProfile(displayName: name);
         await firebaseUser.reload();
         await firebaseUser.sendEmailVerification();
-        FirebaseUser user = FirebaseAuth.instance.currentUser;
-        await createUserInFirestore(user);
+        User user = FirebaseAuth.instance.currentUser;
+        await createUserInFirestore(user, gender);
         authNotifier.setLoading(false);
       }
       authNotifier.setLoading(false);
@@ -57,7 +58,7 @@ signUp(String email, String password, String name,
   }
 }
 
-googleSignIn(AuthNotifier authNotifier) async {
+googleSignIn(AuthNotifier authNotifier, String gender) async {
   try {
     authNotifier.setLoading(true);
     final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -65,14 +66,13 @@ googleSignIn(AuthNotifier authNotifier) async {
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
+    final AuthCredential credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-    final FirebaseUser user =
-        (await _auth.signInWithCredential(credential)).user;
+    final User user = (await _auth.signInWithCredential(credential)).user;
     if (user != null) {
-      await createUserInFirestore(user);
+      await createUserInFirestore(user, gender);
     }
     authNotifier.setError('');
     authNotifier.setUser(user);
@@ -90,12 +90,13 @@ googleSignIn(AuthNotifier authNotifier) async {
   }
 }
 
-signIn(AuthCredential authCredentials, AuthNotifier authNotifier) async {
+signIn(AuthCredential authCredentials, AuthNotifier authNotifier,
+    String gender) async {
   authNotifier.setLoading(true);
   UserCredential authResult =
-      await FirebaseAuth.instance.signInWithCredential(authCredentials);
-  FirebaseUser user = authResult.user;
-  await createUserInFirestore(user);
+  await FirebaseAuth.instance.signInWithCredential(authCredentials);
+  User user = authResult.user;
+  await createUserInFirestore(user, gender);
   authNotifier.setUser(user);
   authNotifier.setError('');
   authNotifier.setLoading(false);
@@ -109,14 +110,14 @@ signOut(AuthNotifier authNotifier) async {
 }
 
 initializeCurrentUser(AuthNotifier authNotifier) async {
-  User currentUser = await FirebaseAuth.instance.currentUser;
+  User currentUser = FirebaseAuth.instance.currentUser;
   if (currentUser != null) {
     authNotifier.setUser(currentUser);
   }
 }
 
 resendEmail() async {
-  User currentUser = await FirebaseAuth.instance.currentUser;
+  User currentUser = FirebaseAuth.instance.currentUser;
   if (currentUser != null) {
     currentUser.sendEmailVerification();
   }

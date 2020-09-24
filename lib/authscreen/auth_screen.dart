@@ -17,7 +17,7 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  AuthType authType;
+  AuthType authType = AuthType.SignIn;
   bool loading = false;
   final _formKey = GlobalKey<FormState>();
   final _alertFormKey = GlobalKey<FormState>();
@@ -29,13 +29,20 @@ class _AuthScreenState extends State<AuthScreen> {
   String passwordResetEmail = '';
   String forgotPasswordError = '';
   bool resend = false;
+  String gender;
+  String selectedDropdown;
+  List<String> genderList = ["Male", "Female", "Others"];
 
-  _AuthScreenState({this.authType});
+  @override
+  void initState() {
+    super.initState();
+    selectedDropdown = '';
+  }
 
   switchForm() {
     setState(() {
       authType =
-          authType == AuthType.SignIn ? AuthType.SignUp : AuthType.SignIn;
+          (authType == AuthType.SignIn ? AuthType.SignUp : AuthType.SignIn);
     });
   }
 
@@ -60,7 +67,7 @@ class _AuthScreenState extends State<AuthScreen> {
       AuthNotifier authNotifier =
           Provider.of<AuthNotifier>(context, listen: false);
       if (authType == AuthType.SignUp) {
-        await signUp(email, password, name, authNotifier);
+        await signUp(email, password, name, gender, authNotifier);
         if (authNotifier.error.isEmpty) {
           showEmailLinkSentAfterSignUpDialog(context);
           switchForm();
@@ -114,6 +121,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 ? _buildTextFormField('Enter your Name', Icons.person, false)
                 : Container(),
             _buildTextFormField('Enter your Email', Icons.email, false),
+
             _buildTextFormField('Enter your Password', Icons.lock, true),
             authType == AuthType.SignUp
                 ? _buildTextFormField('Confirm your Password', Icons.lock, true)
@@ -121,9 +129,46 @@ class _AuthScreenState extends State<AuthScreen> {
             authType == AuthType.SignIn
                 ? _buildForgotPasswordButton(context)
                 : Container(),
+            authType == AuthType.SignUp
+                ? _buildGenderDropDown()
+                : Container(),
             _buildContinueButton(),
           ],
         ),
+      ),
+    );
+  }
+
+  _buildGenderDropDown() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Icon(Icons.person),
+          SizedBox(width: 10),
+          DropdownButton<String>(
+            hint: Text("Select Gender"),
+            style: TextStyle(
+                fontSize: 18,
+                color: greenColor,
+                letterSpacing: 0.5,
+                fontWeight: FontWeight.w500),
+            value: selectedDropdown,
+            items: <String>['Male', 'Female', 'Others'].map((String value) {
+              return new DropdownMenuItem<String>(
+                value: value,
+                child: new Text(value, style: TextStyle(color: greenColor),),
+              );
+            }).toList(),
+            onChanged: (val) {
+              setState(() {
+                selectedDropdown = val;
+                gender = val;
+              });
+            },
+          )
+        ],
       ),
     );
   }
@@ -133,9 +178,11 @@ class _AuthScreenState extends State<AuthScreen> {
       padding: const EdgeInsets.only(top: 25.0),
       child: TextFormField(
         initialValue:
-            authType == AuthType.SignIn && hintText.split(' ').last == 'Email'
-                ? email
-                : '',
+        authType == AuthType.SignIn && hintText
+            .split(' ')
+            .last == 'Email'
+            ? email
+            : '',
         validator: (val) {
           if (val.trim().isEmpty) {
             return "${hintText.split(' ').last} can't be empty";
@@ -350,7 +397,7 @@ class _AuthScreenState extends State<AuthScreen> {
       padding: EdgeInsets.all(16),
       onPressed: () async {
         if (buttonType == "google") {
-          await googleSignIn(authNotifier);
+          await googleSignIn(authNotifier, gender);
           if (authNotifier.error.isEmpty) {
             Navigator.pop(context);
           } else {
@@ -383,7 +430,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
   _buildFooterText() {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 15),
+      padding: EdgeInsets.symmetric(vertical: 25),
       child: GestureDetector(
         onTap: () => switchForm(),
         child: Text(
@@ -391,7 +438,8 @@ class _AuthScreenState extends State<AuthScreen> {
               ? "Don't have an account yet? Sign Up"
               : "Already have an account? Sign in",
           textAlign: TextAlign.center,
-          style: TextStyle(color: lightGreen, fontSize: 16.5),
+          style: TextStyle(
+              color: lightGreen, fontSize: 17.5, fontWeight: FontWeight.w600),
         ),
       ),
     );

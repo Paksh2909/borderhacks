@@ -95,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Padding(
                 padding: EdgeInsets.only(left: width * 0.15),
                 child: Text(
-                  userNotifier.user.name,
+                 authNotifier.user.displayName,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 30,

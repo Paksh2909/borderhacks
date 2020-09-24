@@ -30,22 +30,23 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    return _isLoading
-        ? Loading()
-        : Scaffold(
-            body: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  _buildClippedContainer(height),
-                  SizedBox(height: height * 0.15),
-                  _buildBody(),
-                  SizedBox(height: height * 0.22),
-                  _buildFooterButtons(context),
-                ],
-              ),
-            ),
-          );
+    final height = MediaQuery
+        .of(context)
+        .size
+        .height;
+    return _isLoading ? Loading() : Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            _buildClippedContainer(height),
+            SizedBox(height: height * 0.15),
+            _buildBody(),
+            SizedBox(height: height * 0.22),
+            _buildFooterButtons(context),
+          ],
+        ),
+      ),
+    );
   }
 
   _buildFooterButtons(BuildContext context) {
@@ -54,23 +55,26 @@ class _LandingPageState extends State<LandingPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          _buildFooterButton(context, 'Sign Up', AuthType.SignUp),
-          _buildFooterButton(context, 'Sign In', AuthType.SignIn),
+          _buildFooterButton(context, 'Continue', AuthType.SignIn),
         ],
       ),
     );
   }
 
-  _buildFooterButton(BuildContext context, String text, AuthType authType) {
+  _buildFooterButton(BuildContext context, String text, AuthType auth) {
     return RaisedButton(
-      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 35),
+      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 70),
       elevation: 5.0,
       color: greenColor,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-      onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => AuthScreen(
-                authType: authType,
-              ))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      onPressed: () {
+        print(auth);
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) =>
+                AuthScreen(
+                  authType: auth,
+                )));
+      },
       child: Text(
         text,
         style: TextStyle(
