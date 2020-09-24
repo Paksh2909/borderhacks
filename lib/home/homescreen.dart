@@ -6,7 +6,7 @@ import 'package:hackathon_app/notifier/user_notifier.dart';
 import 'package:hackathon_app/pages/doctor_detail.dart';
 import 'package:provider/provider.dart';
 
-import 'file:///C:/Users/ps609/AndroidStudioProjects/hackathon_app/lib/globalconstants/constants.dart';
+import 'package:hackathon_app/globalconstants/constants.dart';
 
 class HomeScreen extends StatefulWidget {
   @override

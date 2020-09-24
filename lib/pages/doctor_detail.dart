@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/ps609/AndroidStudioProjects/hackathon_app/lib/globalconstants/constants.dart';
+import 'package:hackathon_app/globalconstants/constants.dart';
 
 class DoctorDetails extends StatefulWidget {
   @override
