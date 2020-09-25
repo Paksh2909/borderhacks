@@ -1,3 +1,4 @@
+
 <!doctype html>
 
 <html>
@@ -20,22 +21,7 @@
             https://firebase.google.com/docs/web/setup#available-libraries -->
         <script src="https://www.gstatic.com/firebasejs/7.21.1/firebase-analytics.js"></script>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <!-- Nav Links -->
-      <div class="collapse navbar-collapse justify-content-center" id="navbarTogglerDemo02">
-        <a class="navbar-brand" href="index.html" > Home </a>
-
-        <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="meds.html"> Meds </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="docs.html" > Docs </a>
-          </li>
-        </ul>
-      </div>
-
-    </nav>
+    
   <!--<!DOCTYPE html> -->
     <!-- </html> --><html>
     <head> 
@@ -106,7 +92,7 @@
       </head>
       <!-- </body> -->
       
-      <h3 style= "text-align: center ;">Login Form</h3>
+      <h3 style= "text-align: center ;">Registration Form</h3>
       
       <form method="post">
         <div class="imgcontainer">
@@ -114,29 +100,37 @@
         </div>  
       
         <div id="login_div" class="container">
-          <label for="uname"><b>Username</b></label>
-          <input type="text" placeholder="Enter Username" name="uname" required id="email_field">
+
+          <label for="uname"><b>Name</b></label>
+          <input type="text" placeholder="Enter Name" name="uname" required id="name_field">
+
+          <label for="uname"><b>Email Id</b></label>
+          <input type="text" placeholder="Enter Email Id" name="uname" required id="email_field">
       
           <label for="psw"><b>Password</b></label>
           <input type="password" placeholder="Enter Password" name="psw" required id="password_field">
-              
-          <button onclick="login()">Login to Account</button>
 
-          <label>
-            <input type="checkbox" checked="checked" name="remember"> Remember me
-          </label>
+          <label for="uname"><b>Latitude</b></label>
+          <input type="text" placeholder="Enter Latitude" name="uname" required id="latitude_field">
+
+          <label for="uname"><b>Longitude</b></label>
+          <input type="text" placeholder="Enter Longitude" name="uname" required id="longitude_field">
+
+              
+          
+          <a href="meds.html">
+            <button type="button" >Register Account</button>
+            </a>
+          
         </div>
-        
-        
+<!-- <div id="user_div" class="loggedin-div">
+          <h3>Welcome User</h3>
+          <p id="user_para">Welcome to Pharmacy Hub. You're currently logged in.</p>
+          <button onclick="logout()">Logout</button>
+        </div>-->
         
       
-        <div class="container" style="background-color:#f1f1f1">
-          <button type="button" class="cancelbtn">Cancel</button>
-          <a href="register.html">
-          <button type="button" class="cancelbtn">Register</button>
-          </a>
-          <span class="psw">Forgot <a href="#">password?</a></span>
-        </div>
+        
       </form>-->
     
      <!-- </body> -->
@@ -167,6 +161,6 @@
 </script>
 
 
-      <script src="index.js"></script>
+      <script src="app3.js"></script>
     </body>
 </html>
