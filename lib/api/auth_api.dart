@@ -94,7 +94,7 @@ signIn(AuthCredential authCredentials, AuthNotifier authNotifier,
     String gender) async {
   authNotifier.setLoading(true);
   UserCredential authResult =
-  await FirebaseAuth.instance.signInWithCredential(authCredentials);
+      await FirebaseAuth.instance.signInWithCredential(authCredentials);
   User user = authResult.user;
   await createUserInFirestore(user, gender);
   authNotifier.setUser(user);

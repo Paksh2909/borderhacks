@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hackathon_app/home/homescreen.dart';
+import 'package:hackathon_app/pages/medicine.dart';
 import 'package:hackathon_app/pages/symptom_check.dart';
+import 'package:hackathon_app/profile/profile_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,7 +13,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int currentPage = 0;
   final pageOptions = [
+    HomeScreen(),
     SymptomCheck(),
+    Medicine(),
+    ProfilePage(),
   ];
 
   Future<bool> _onWillPop() async {
@@ -48,7 +53,7 @@ class _HomePageState extends State<HomePage> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
-        body: HomeScreen(), //pageOptions[currentPage],
+        body: pageOptions[currentPage], //pageOptions[currentPage],
         bottomNavigationBar: ClipRRect(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),

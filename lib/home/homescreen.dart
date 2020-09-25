@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hackathon_app/api/user_api.dart';
+import 'package:hackathon_app/globalconstants/constants.dart';
 import 'package:hackathon_app/notifier/auth_notifier.dart';
 import 'package:hackathon_app/notifier/user_notifier.dart';
 import 'package:hackathon_app/pages/doctor_detail.dart';
 import 'package:provider/provider.dart';
-
-import 'package:hackathon_app/globalconstants/constants.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -29,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<String> _searchedDocs = [];
   bool _foundDoc = false;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -37,11 +37,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   setUser() async {
+    setState(() {
+      _isLoading = true;
+    });
     AuthNotifier authNotifier =
         Provider.of<AuthNotifier>(context, listen: false);
     UserNotifier userNotifier =
         Provider.of<UserNotifier>(context, listen: false);
     await getUserFromFirestore(authNotifier.user, userNotifier);
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -53,7 +59,9 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Stack(
         children: [
           Column(
-            children: <Widget>[_buildAppBar(height, width), _buildSearchList()],
+            children: _isLoading
+                ? [Center(child: CircularProgressIndicator())]
+                : <Widget>[_buildAppBar(height, width), _buildSearchList()],
           ),
           Positioned(
             top: -27,
@@ -69,6 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Provider.of<UserNotifier>(context, listen: false);
     AuthNotifier authNotifier =
     Provider.of<AuthNotifier>(context, listen: false);
+    print(userNotifier.user.gender);
     return Container(
       height: height * 0.20,
       width: width,
@@ -95,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Padding(
                 padding: EdgeInsets.only(left: width * 0.15),
                 child: Text(
-                 authNotifier.user.displayName,
+                  userNotifier.user.name,
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 30,

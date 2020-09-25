@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hackathon_app/globalconstants/constants.dart';
 
 class SymptomCheck extends StatefulWidget {
   @override
@@ -12,6 +13,7 @@ class _SymptomCheckState extends State<SymptomCheck> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Symptom Check"),
+        backgroundColor: lightGreen,
       ),
       body: Center(
         child: Text("Hi"),
