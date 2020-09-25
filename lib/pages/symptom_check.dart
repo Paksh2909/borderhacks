@@ -21,3 +21,4 @@ class _SymptomCheckState extends State<SymptomCheck> {
     );
   }
 }
+//Pakshal ka lund chota
