@@ -1,23 +1,20 @@
-const docList = document.querySelector('#doc-list');
-const form = document.querySelector('#add-doc-form');
+const docList = document.querySelector('#med-list');
+const form = document.querySelector('#add-med-form');
 
-function renderPharm(doc){
+function renderMed(doc){
     let li = document.createElement('li');
     let name = document.createElement('span');
-    let spec = document.createElement('span');
-    let loc = document.createElement('span');
-    let contact = document.createElement('span');
+    let price = document.createElement('span');
+    let avail = document.createElement('span');
 
     li.setAttribute('data-id',doc.id);
     name.textContent = doc.data().name;
-    loc.textContent = doc.data().location;
-    spec.textContent = doc.data().specialization;
-    contact.textContent = doc.data().contact;
+    price.textContent = doc.data().price;
+    avail.textContent = doc.data().avail;
 
     li.appendChild(name);
-    li.appendChild(loc);
-    li.appendChild(spec);
-    li.appendChild(contact);
+    li.appendChild(price);
+    li.appendChild(avail);
 
     docList.appendChild(li);
 }
@@ -49,13 +46,13 @@ form.addEventListener('submit', (e) => {
 
 //Real Time Listening
 
-// db.collection('doctors').onSnapshot(snapshot => {
-//     let changes = snapshot.docChanges();
-//     changes.forEach(change => {
-//         if(change.type=='added')
-//         {
-//             renderPharm(change.doc);
-//         }
-//     })
+db.collection('doctors').onSnapshot(snapshot => {
+    let changes = snapshot.docChanges();
+    changes.forEach(change => {
+        if(change.type=='added')
+        {
+            renderMed(change.doc);
+        }
+    })
     
-// })
+})
