@@ -36,7 +36,7 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   void initState() {
     super.initState();
-    selectedDropdown = '';
+    selectedDropdown = 'Male';
   }
 
   switchForm() {
