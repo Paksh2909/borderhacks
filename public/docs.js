@@ -22,11 +22,11 @@ function renderPharm(doc){
     docList.appendChild(li);
 }
 
-db.collection('doctors').get().then((snapshot) => {
-    snapshot.docs.forEach(doc => {
-        renderPharm(doc);
-    });
-})
+// db.collection('doctors').get().then((snapshot) => {
+//     snapshot.docs.forEach(doc => {
+//         renderPharm(doc);
+//     });
+// })
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -34,8 +34,26 @@ form.addEventListener('submit', (e) => {
         name: form.name.value,
         location: form.location.value,
         specialization: form.specialization.value,
-        contact: form.contact.value
-
+        contact: parseInt(form.contact.value)
     })
+    form.name.value = '';
+    form.location.value = '';
+    form.specialization.value ='';
+    form.contact.value = '';
+    
 
 })
+
+
+//Real Time Listening
+
+// db.collection('doctors').onSnapshot(snapshot => {
+//     let changes = snapshot.docChanges();
+//     changes.forEach(change => {
+//         if(change.type=='added')
+//         {
+//             renderPharm(change.doc);
+//         }
+//     })
+    
+// })
