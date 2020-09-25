@@ -13,7 +13,12 @@ class _MedicineState extends State<Medicine> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Medicine"),
+        centerTitle: true,
         backgroundColor: lightGreen,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20))),
       ),
       body: Center(
         child: Text("Hi"),

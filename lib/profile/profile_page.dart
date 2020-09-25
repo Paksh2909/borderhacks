@@ -22,6 +22,10 @@ class _ProfilePageState extends State<ProfilePage> {
           title: Text("Profile"),
           centerTitle: true,
           backgroundColor: lightGreen,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20))),
         ),
         body: Padding(
           padding: const EdgeInsets.all(15.0),

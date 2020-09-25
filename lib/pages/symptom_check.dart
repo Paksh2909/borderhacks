@@ -13,7 +13,12 @@ class _SymptomCheckState extends State<SymptomCheck> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Symptom Check"),
+        centerTitle: true,
         backgroundColor: lightGreen,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20))),
       ),
       body: Center(
         child: Text("Hi"),

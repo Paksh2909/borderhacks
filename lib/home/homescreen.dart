@@ -57,17 +57,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       body: Stack(
-        children: [
-          Column(
-            children: _isLoading
-                ? [Center(child: CircularProgressIndicator())]
-                : <Widget>[_buildAppBar(height, width), _buildSearchList()],
-          ),
-          Positioned(
-            top: -27,
-            child: _buildSearchField(height, width),
-          ),
-        ],
+        children: _isLoading
+            ? [Center(child: CircularProgressIndicator())]
+            : [
+                Column(
+                  children: <Widget>[
+                    _buildAppBar(height, width),
+                    _buildSearchList()
+                  ],
+                ),
+                Positioned(
+                  top: -27,
+                  child: _buildSearchField(height, width),
+                ),
+              ],
       ),
     );
   }
