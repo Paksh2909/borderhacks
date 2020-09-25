@@ -20,8 +20,7 @@
             https://firebase.google.com/docs/web/setup#available-libraries -->
         <script src="https://www.gstatic.com/firebasejs/7.21.1/firebase-analytics.js"></script>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <!-- Nav Links -->
+    <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="collapse navbar-collapse justify-content-center" id="navbarTogglerDemo02">
         <a class="navbar-brand" href="home.html" > Home </a>
 
@@ -35,13 +34,19 @@
         </ul>
       </div>
 
-    </nav>
+    </nav> -->
 
     <h1>Doctor's Hub</h1>
 
         <div class="content">
 
-            <form id="add-doc-form"></form>
+            <form id="add-doc-form">
+              <input type="text" name="name" placeholder="Your name">
+              <input type="text" name="location" placeholder="Your location">
+              <input type="text" name="specialization" placeholder="Your specialization">
+              <input type="tel" name="contact" placeholder="Your Contact">
+              <button>Add Doctor</button>
+            </form>
 
             <ul id="doc-list"></ul>
 
