@@ -1,22 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user.dart';
+part of 'pharmacies.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-CustomUser _$CustomUserFromJson(Map<String, dynamic> json) {
-  return CustomUser(
-    gender: json['gender'] as String ?? '',
-    email: json['email'] as String ?? '',
+Pharmacies _$PharmaciesFromJson(Map<String, dynamic> json) {
+  return Pharmacies(
     name: json['name'] as String ?? '',
+    medicines:
+        (json['medicines'] as List)?.map((e) => e as String)?.toList() ?? [],
   );
 }
 
-Map<String, dynamic> _$CustomUserToJson(CustomUser instance) =>
+Map<String, dynamic> _$PharmaciesToJson(Pharmacies instance) =>
     <String, dynamic>{
-      'email': instance.email,
       'name': instance.name,
-      'gender': instance.gender,
+      'medicines': instance.medicines,
     };

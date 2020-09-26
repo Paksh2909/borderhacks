@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hackathon_app/models/doctor.dart';
 import 'package:hackathon_app/models/user.dart';
 import 'package:hackathon_app/notifier/user_notifier.dart';
 
@@ -18,4 +21,19 @@ createUserInFirestore(User user, String gender) async {
     "email": user.email,
     "gender": gender,
   });
+}
+
+getDoctorsFromFirestore() async {
+  QuerySnapshot docList = await firestoreInstance.collection("doctors")
+      .get()
+      .catchError((e) => print(" error" + e));
+
+
+  Map<int, Doctor> docData = {};
+  docList.docs.asMap().forEach((key, value) {
+    Doctor doc = Doctor.fromJson(value.data());
+    docData[key] = doc;
+  });
+
+  return docData;
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:hackathon_app/api/user_api.dart';
 import 'package:hackathon_app/globalconstants/constants.dart';
+import 'package:hackathon_app/models/doctor.dart';
 import 'package:hackathon_app/notifier/auth_notifier.dart';
 import 'package:hackathon_app/notifier/user_notifier.dart';
 import 'package:hackathon_app/pages/doctor_detail.dart';
@@ -13,26 +15,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<String> docList = [
-    "Doc 1",
-    "Doc 2",
-    "Doc 3",
-    "Doc 4",
-    "Doc 5",
-    "Doc 6",
-    "Doc 7",
-    "Doc 8",
-    "Doc 9",
-    "Doc 10",
-  ];
 
-  List<String> _searchedDocs = [];
+  Map<int, Doctor> _searchedDocs = {};
   bool _foundDoc = false;
   bool _isLoading = false;
+  Map<int, Doctor> docList;
 
   @override
   void initState() {
     setUser();
+    getDoctorDetails();
     super.initState();
   }
 
@@ -45,6 +37,17 @@ class _HomeScreenState extends State<HomeScreen> {
     UserNotifier userNotifier =
         Provider.of<UserNotifier>(context, listen: false);
     await getUserFromFirestore(authNotifier.user, userNotifier);
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  getDoctorDetails() async {
+    setState(() {
+      _isLoading = true;
+    });
+    docList = await getDoctorsFromFirestore();
+
     setState(() {
       _isLoading = false;
     });
@@ -80,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Provider.of<UserNotifier>(context, listen: false);
     AuthNotifier authNotifier =
     Provider.of<AuthNotifier>(context, listen: false);
-    print(userNotifier.user.gender);
+
     return Container(
       height: height * 0.20,
       width: width,
@@ -128,16 +131,17 @@ class _HomeScreenState extends State<HomeScreen> {
       child: TextField(
         onChanged: (val) {
           setState(() {
-            _searchedDocs = [];
+            _searchedDocs = {};
             _foundDoc = true;
           });
           if (val.isNotEmpty) {
-            docList.forEach((doc) {
-              if (doc.contains(val.trim()) ||
-                  doc.toUpperCase().contains(val.trim()) ||
-                  doc.toLowerCase().contains(val.trim())) {
+            docList.forEach((key, doc) {
+              if (doc.name.contains(val.trim()) ||
+                  doc.name.toUpperCase().contains(val.trim()) ||
+                  doc.name.toLowerCase().contains(val.trim())) {
                 setState(() {
-                  _searchedDocs.add(doc);
+                  _searchedDocs[key] = docList[key];
+                  print(_searchedDocs[key]);
                 });
               }
             });
@@ -172,31 +176,49 @@ class _HomeScreenState extends State<HomeScreen> {
       child: ListView.separated(
         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 40),
         itemCount:
-            _searchedDocs.isEmpty ? docList.length : _searchedDocs.length,
-        itemBuilder: (context, index) => _buildCourseListItem(
-            _searchedDocs.isEmpty ? docList[index] : _searchedDocs[index],
-            index),
+        _searchedDocs.isEmpty ? docList.length : _searchedDocs.length,
+        itemBuilder: (context, index) =>
+            _buildCourseListItem(
+                (_searchedDocs.isEmpty ? docList : _searchedDocs),
+                index),
         separatorBuilder: (context, index) => SizedBox(height: 30),
       ),
     );
   }
 
-  _buildCourseListItem(String title, int index) {
+  _buildCourseListItem(Map<int, Doctor> docs, int index) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => DoctorDetails()));
+            context, MaterialPageRoute(builder: (context) => DoctorDetails(
+          name: docs[index].name,
+          contact: docs[index].contact,
+          specialization: docs[index].specialization,)));
       },
       child: Container(
         height: 80,
         child: Padding(
-          padding: EdgeInsets.only(top: 10, left: 10, right: 10),
-          child: Text(
-            title,
-            style: Theme.of(context).textTheme.headline4,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
+            padding: EdgeInsets.only(top: 10, left: 10, right: 10),
+            child: ListTile(
+              title: Text(
+                docs[index].name,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .headline4,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              subtitle: Text(
+                docs[index].specialization,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodyText1,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            )
         ),
         decoration: BoxDecoration(
           border: Border.all(

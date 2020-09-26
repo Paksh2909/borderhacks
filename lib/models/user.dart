@@ -16,7 +16,7 @@ class CustomUser {
   CustomUser({this.gender, this.email, this.name});
 
   factory CustomUser.fromJson(Map<String, dynamic> json) =>
-      _$UserFromJson(json);
+      _$CustomUserFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UserToJson(this);
+  Map<String, dynamic> toJson() => _$CustomUserToJson(this);
 }
