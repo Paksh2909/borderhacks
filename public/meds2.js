@@ -1,4 +1,4 @@
-const docList = document.querySelector('#med-list');
+const medList = document.querySelector('#med-list');
 const form = document.querySelector('#add-med-form');
 
 function renderMed(doc){
@@ -16,7 +16,7 @@ function renderMed(doc){
     li.appendChild(price);
     li.appendChild(avail);
 
-    docList.appendChild(li);
+    medList.appendChild(li);
 }
 
 // db.collection('doctors').get().then((snapshot) => {
@@ -28,12 +28,6 @@ function renderMed(doc){
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     db.collection('pharmacies').collection('meds').add({
-        name: form.name.value,
-        avail: form.avail.value,
-        price: form.price.value,
-    })
-
-    db.collection('meds').add({
         name: form.name.value,
         avail: form.avail.value,
         price: form.price.value,
