@@ -1,4 +1,4 @@
-const docList = document.querySelector('#med-list');
+const medList = document.querySelector('#med-list');
 const form = document.querySelector('#add-med-form');
 
 function renderMed(doc){
@@ -16,7 +16,7 @@ function renderMed(doc){
     li.appendChild(price);
     li.appendChild(avail);
 
-    docList.appendChild(li);
+    medList.appendChild(li);
 }
 
 // db.collection('doctors').get().then((snapshot) => {
@@ -27,17 +27,14 @@ function renderMed(doc){
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
-    db.collection('doctors').add({
+    db.collection('pharmacies').collection('meds').add({
         name: form.name.value,
-        location: new firebase.firestore.GeoPoint(parseFloat(form.latitude.value), parseFloat(form.longitude.value)),
-        specialization: form.specialization.value,
-        contact: parseInt(form.contact.value)
+        avail: form.avail.value,
+        price: form.price.value,
     })
     form.name.value = '';
-    form.latitude.value = '';
-    form.longitude.value = '';
-    form.specialization.value ='';
-    form.contact.value = '';
+    form.avail.value = '';
+    form.price.value = '';
     
     
 
@@ -46,7 +43,7 @@ form.addEventListener('submit', (e) => {
 
 //Real Time Listening
 
-db.collection('doctors').onSnapshot(snapshot => {
+db.collection('pharmacies').collection('meds').onSnapshot(snapshot => {
     let changes = snapshot.docChanges();
     changes.forEach(change => {
         if(change.type=='added')
