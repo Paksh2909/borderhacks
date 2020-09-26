@@ -38,6 +38,8 @@ form.addEventListener('submit', (e) => {
     db.collection('doctors').add({
         name: form.name.value,
         location: new firebase.firestore.GeoPoint(parseFloat(form.latitude.value), parseFloat(form.longitude.value)),
+        latitude: parseFloat(form.latitude.value),
+        longitude: parseFloat(form.longitude.value),
         specialization: form.specialization.value,
         contact: parseInt(form.contact.value),
         clinic: form.clinic.value,
