@@ -9,17 +9,20 @@ function renderPharm(doc){
     let spec = document.createElement('span');
     let loc = document.createElement('span');
     let contact = document.createElement('span');
+    let clinic = document.createElement('span');
 
     li.setAttribute('data-id',doc.id);
     name.textContent = doc.data().name;
     loc.textContent = doc.data().location;
     spec.textContent = doc.data().specialization;
     contact.textContent = doc.data().contact;
+    clinic.textContent = doc.data().clinic;
 
     li.appendChild(name);
     li.appendChild(loc);
     li.appendChild(spec);
     li.appendChild(contact);
+    li.appendChild(clinic);
 
     docList.appendChild(li);
 }
@@ -36,13 +39,15 @@ form.addEventListener('submit', (e) => {
         name: form.name.value,
         location: new firebase.firestore.GeoPoint(parseFloat(form.latitude.value), parseFloat(form.longitude.value)),
         specialization: form.specialization.value,
-        contact: parseInt(form.contact.value)
+        contact: parseInt(form.contact.value),
+        clinic: form.clinic.value,
     })
     form.name.value = '';
     form.latitude.value = '';
     form.longitude.value = '';
     form.specialization.value ='';
     form.contact.value = '';
+    form.clinic.value='';
     
     
 
