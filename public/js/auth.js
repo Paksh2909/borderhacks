@@ -18,6 +18,9 @@ registerForm.addEventListener('submit', (e) => {
   
   const email = registerForm.email.value;
   const password = registerForm.password.value;
+  const name = registerForm.name.value;
+  const latitude = registerForm.latitude.value;
+  const longitude = registerForm.longitude.value;
 
   firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(user => {
