@@ -24,15 +24,16 @@ createUserInFirestore(User user, String gender) async {
 }
 
 getDoctorsFromFirestore() async {
-  QuerySnapshot docList = await firestoreInstance.collection("doctors")
+  QuerySnapshot docList = await firestoreInstance
+      .collection("doctors")
       .get()
       .catchError((e) => print(" error" + e));
-
 
   Map<int, Doctor> docData = {};
   docList.docs.asMap().forEach((key, value) {
     Doctor doc = Doctor.fromJson(value.data());
     docData[key] = doc;
+    // docData[key].location = doc.location;
   });
 
   return docData;

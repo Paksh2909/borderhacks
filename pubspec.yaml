@@ -43,6 +43,9 @@ dependencies:
   json_annotation: ^3.0.1
   firebase_core: ^0.5.0
   cloud_firestore: ^0.14.0+2
+  geolocator: ^6.0.0+4
+  google_maps_flutter: ^0.5.33
+  geopoint: ^0.7.1
 
 
 

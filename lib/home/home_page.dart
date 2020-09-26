@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hackathon_app/home/homescreen.dart';
+import 'package:hackathon_app/home/find_doctor.dart';
 import 'package:hackathon_app/pages/medicine.dart';
 import 'package:hackathon_app/pages/symptom_check.dart';
 import 'package:hackathon_app/profile/profile_page.dart';
@@ -13,7 +13,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int currentPage = 0;
   final pageOptions = [
-    HomeScreen(),
+    FindDoctor(),
     SymptomCheck(),
     Medicine(),
     ProfilePage(),

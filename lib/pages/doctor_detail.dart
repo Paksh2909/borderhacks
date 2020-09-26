@@ -1,13 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geopoint/geopoint.dart';
 import 'package:hackathon_app/globalconstants/constants.dart';
 
 class DoctorDetails extends StatefulWidget {
   final String name;
   final int contact;
   final String specialization;
+  final String clinic;
 
-  DoctorDetails({this.name, this.contact, this.specialization});
+  // final GeoPoint location;
+
+  DoctorDetails({this.name, this.contact, this.specialization, this.clinic});
 
   @override
   _DoctorDetailsState createState() => _DoctorDetailsState();
@@ -42,6 +46,13 @@ class _DoctorDetailsState extends State<DoctorDetails> {
             ListTile(
               leading: Icon(Icons.star),
               title: Text(widget.specialization),
+            ),
+            ListTile(
+              title: Text(widget.clinic),
+              leading: Icon(Icons.local_hospital),
+            ),
+            ListTile(
+              title: Text("widget.location.toString()"),
             ),
             Divider(color: Colors.black, thickness: 1)
           ],
