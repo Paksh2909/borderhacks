@@ -27,7 +27,7 @@ function renderMed(doc){
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
-    db.collection('doctors').add({
+    db.collection('pharmacies').collection('meds').add({
         name: form.name.value,
         location: new firebase.firestore.GeoPoint(parseFloat(form.latitude.value), parseFloat(form.longitude.value)),
         specialization: form.specialization.value,
@@ -46,7 +46,7 @@ form.addEventListener('submit', (e) => {
 
 //Real Time Listening
 
-db.collection('doctors').onSnapshot(snapshot => {
+db.collection('pharmacies').collection('meds').onSnapshot(snapshot => {
     let changes = snapshot.docChanges();
     changes.forEach(change => {
         if(change.type=='added')
