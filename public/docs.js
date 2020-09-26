@@ -1,5 +1,7 @@
 const docList = document.querySelector('#doc-list');
 const form = document.querySelector('#add-doc-form');
+var lati;
+var longi;
 
 function renderPharm(doc){
     let li = document.createElement('li');
