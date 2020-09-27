@@ -103,13 +103,7 @@ https://github.com/Paksh2909/borderhacks/blob/webapp/WhatsApp%20Image%202020-09-
 
 
 # *Authors*
-* Harsh Kapadia (HarshKapadia2, harshgkapadia@gmail.com)
-- [LinkedIn](http://www.linkedin.com/in/harsh-kapadia-426999175)
-* Kartik Soneji (KartikSoneji, kartiksoneji@rocketmail.com)
-- [LinkedIn](https://www.linkedin.com/in/kartiksoneji)
-* Tushar Nankani (tusharnankani, tusharnankani3@gmail.com)
-- [LinkedIn](https://www.linkedin.com/in/tusharnankani)
-
-On Sun, Sep 27, 2020 at 5:56 PM Vedant Agarwal <vedantagarwal4@gmail.com> wrote:
->
->
+* Vedant Agarwal (vedantagarwal4, vedantagarwal4@gmail.com)
+* Pakshal Shah (paksh2909, pakshals29@gmail.com)
+* Hritvik Agarwal(hritupitu, hritvik.agarwal@gmail.com)
+* Saumya Karia (saumyakaria, saumyakaria.51200@gmail.com)
