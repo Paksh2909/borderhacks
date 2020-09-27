@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hackathon_app/home/find_doctor.dart';
-import 'package:hackathon_app/pages/medicine.dart';
+import 'package:hackathon_app/pages/pharmacy.dart';
 import 'package:hackathon_app/pages/symptom_check.dart';
 import 'package:hackathon_app/profile/profile_page.dart';
 
@@ -15,7 +15,7 @@ class _HomePageState extends State<HomePage> {
   final pageOptions = [
     FindDoctor(),
     SymptomCheck(),
-    Medicine(),
+    Pharmacy(),
     ProfilePage(),
   ];
 

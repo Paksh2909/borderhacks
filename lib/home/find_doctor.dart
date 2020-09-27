@@ -15,14 +15,13 @@ class FindDoctor extends StatefulWidget {
 
 class _FindDoctorState extends State<FindDoctor> {
   Map<int, Doctor> _searchedDocs = {};
-  bool _foundDoc = false;
+  bool _foundDoc = true;
   bool _isLoading = false;
   Map<int, Doctor> docList;
 
   @override
   void initState() {
     setUser();
-    getDoctorDetails();
     super.initState();
   }
 
@@ -35,21 +34,18 @@ class _FindDoctorState extends State<FindDoctor> {
     UserNotifier userNotifier =
         Provider.of<UserNotifier>(context, listen: false);
     await getUserFromFirestore(authNotifier.user, userNotifier);
-
+    docList = await getDoctorsFromFirestore();
     setState(() {
       _isLoading = false;
     });
   }
 
-  getDoctorDetails() async {
-    setState(() {
-      _isLoading = true;
-    });
-    docList = await getDoctorsFromFirestore();
-
-    setState(() {
-      _isLoading = false;
-    });
+  _buildLoadingIndicator() {
+    return Expanded(
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
   }
 
   @override
@@ -60,12 +56,12 @@ class _FindDoctorState extends State<FindDoctor> {
     return Scaffold(
       body: Stack(
         children: _isLoading
-            ? [Center(child: CircularProgressIndicator())]
+            ? _buildLoadingIndicator()
             : [
                 Column(
                   children: <Widget>[
                     _buildAppBar(height, width),
-                    _buildSearchList()
+                    _isLoading ? _buildLoadingIndicator() : _buildSearchList()
                   ],
                 ),
                 Positioned(
@@ -129,7 +125,6 @@ class _FindDoctorState extends State<FindDoctor> {
         onChanged: (val) {
           setState(() {
             _searchedDocs = {};
-            _foundDoc = true;
           });
           if (val.isNotEmpty) {
             docList.forEach((key, doc) {
@@ -138,7 +133,7 @@ class _FindDoctorState extends State<FindDoctor> {
                   doc.name.toLowerCase().contains(val.trim())) {
                 setState(() {
                   _searchedDocs[key] = docList[key];
-                  print(_searchedDocs[key]);
+                  print(_searchedDocs[key].name);
                 });
               }
             });
@@ -170,18 +165,25 @@ class _FindDoctorState extends State<FindDoctor> {
 
   _buildSearchList() {
     return Expanded(
-      child: ListView.separated(
+      child: _foundDoc
+          ? ListView.separated(
         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 40),
         itemCount:
-            _searchedDocs.isEmpty ? docList.length : _searchedDocs.length,
-        itemBuilder: (context, index) => _buildDoctorListItem(
-            (_searchedDocs.isEmpty ? docList : _searchedDocs), index),
-        separatorBuilder: (context, index) => SizedBox(height: 30),
+        _searchedDocs.isEmpty ? docList.length : _searchedDocs.length,
+        itemBuilder: (context, index) =>
+            _buildDoctorListItem(
+                (_searchedDocs.isEmpty ? docList : _searchedDocs), index),
+        separatorBuilder: (context, index) => SizedBox(height: 20),
+      )
+          : Center(
+        child: Text("No Doctors found with that name"),
       ),
     );
   }
 
   _buildDoctorListItem(Map<int, Doctor> docs, int index) {
+    print(docs[index].name);
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -200,7 +202,7 @@ class _FindDoctorState extends State<FindDoctor> {
       child: Container(
         height: 80,
         child: Padding(
-            padding: EdgeInsets.only(top: 10, left: 10, right: 10),
+            padding: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
             child: ListTile(
               title: Text(
                 docs[index].name,

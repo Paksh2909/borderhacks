@@ -38,7 +38,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   userNotifier.user.name,
                   overflow: TextOverflow.ellipsis,
                 ),
-                trailing: Icon(Icons.edit),
               ),
               ListTile(
                 leading: Icon(Icons.email),
@@ -46,7 +45,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   userNotifier.user.email,
                   overflow: TextOverflow.ellipsis,
                 ),
-                trailing: Icon(Icons.edit),
               ),
               ListTile(
                 leading: Icon(Icons.perm_identity),

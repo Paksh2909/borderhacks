@@ -39,7 +39,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
         backgroundColor: lightGreen,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(20),
+          bottomLeft: Radius.circular(20),
                 bottomRight: Radius.circular(20))),
       ),
       body: Padding(
@@ -66,17 +66,20 @@ class _DoctorDetailsState extends State<DoctorDetails> {
             Divider(color: Colors.black, thickness: 1),
             SizedBox(height: 10),
             Container(
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height * 0.45,
-              width: double.infinity,
+              height: MediaQuery.of(context).size.height * 0.45,
+              width: MediaQuery.of(context).size.width * 0.95,
               child: GoogleMap(
                 markers: _markers,
                 compassEnabled: true,
                 myLocationEnabled: true,
                 myLocationButtonEnabled: true,
                 mapType: MapType.normal,
+                onTap: (LatLng loc) {
+                  CameraPosition(
+                    target: LatLng(widget.latitude, widget.longitude),
+                    zoom: 15,
+                  );
+                },
                 onMapCreated: (controller) {
                   setState(() {
                     googleMapController = controller;
@@ -91,7 +94,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                 },
                 initialCameraPosition: CameraPosition(
                     target: LatLng(widget.latitude, widget.longitude),
-                    zoom: 10),
+                    zoom: 15),
               ),
             ),
           ],

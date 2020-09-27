@@ -140,7 +140,7 @@ class _SymptomCheckState extends State<SymptomCheck> {
                         FlatButton(
                           color: greenColor,
                           onPressed: getDiseaseList,
-                          child: Text("Button"),
+                          child: Text("Find"),
                         ),
                       ],
                     ),

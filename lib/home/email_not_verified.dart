@@ -73,7 +73,10 @@ class _EmailNotVerifiedPageState extends State<EmailNotVerifiedPage> {
           ),
           SizedBox(height: 10),
           Text(
-            '${authNotifier.user.displayName} :)',
+            (authNotifier.user.displayName != null ||
+                    authNotifier.user.displayName.isNotEmpty)
+                ? "${authNotifier.user.displayName} :)"
+                : "User :)",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
           ),
           SizedBox(height: 15),
@@ -168,7 +171,7 @@ class _EmailNotVerifiedPageState extends State<EmailNotVerifiedPage> {
           child: Padding(
             padding: EdgeInsets.only(bottom: 30.0),
             child: Text(
-              'IoTA',
+              'Medicino',
               style: TextStyle(
                   fontSize: 50,
                   fontWeight: FontWeight.bold,

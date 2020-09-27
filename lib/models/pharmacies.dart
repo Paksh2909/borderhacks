@@ -1,3 +1,4 @@
+import 'package:hackathon_app/models/medicine.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pharmacies.g.dart';
@@ -8,9 +9,15 @@ class Pharmacies {
   final String name;
 
   @JsonKey(defaultValue: [])
-  final List<String> medicines;
+  final List<Medicine> medicines;
 
-  Pharmacies({this.name, this.medicines});
+  @JsonKey(defaultValue: 0)
+  final int longitude;
+
+  @JsonKey(defaultValue: 0)
+  final int latitude;
+
+  Pharmacies({this.name, this.medicines, this.latitude, this.longitude});
 
   factory Pharmacies.fromJson(Map<String, dynamic> json) =>
       _$PharmaciesFromJson(json);
