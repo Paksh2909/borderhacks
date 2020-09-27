@@ -1,13 +1,14 @@
+import firebase admin
+from firebase_admin import credentials
+from firebase_admin import firestore 
+db = firestore.client()
+id = []
+docs=[]
+collections = []
+f=[]
+
 
 def func(li , latitude ,longitude):
-    import firebase admin
-    from firebase_admin import credentials
-    from firebase_admin import firestore 
-    db = firestore.client()
-    id = []
-    docs=[]
-    collections = []
-    f=[]
     docs.append(db.collection(u'pharmacies').stream()) # To access all docs in pharmacies collection 
     
     cnt=0
