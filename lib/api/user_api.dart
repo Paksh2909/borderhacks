@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hackathon_app/models/doctor.dart';
@@ -37,4 +35,18 @@ getDoctorsFromFirestore() async {
   });
 
   return docData;
+}
+
+getDiseases(List<String> symptomList) async {
+  var diseaseList = [];
+  QuerySnapshot docList = await firestoreInstance
+      .collection("diseases")
+      .where("symptoms", arrayContainsAny: symptomList)
+      .get();
+  docList.docs.forEach((element) {
+    print(element.data());
+    diseaseList.add(element.data());
+  });
+
+  return diseaseList;
 }

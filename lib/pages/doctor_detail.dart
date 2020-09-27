@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:geopoint/geopoint.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hackathon_app/globalconstants/constants.dart';
 
 class DoctorDetails extends StatefulWidget {
@@ -8,16 +8,28 @@ class DoctorDetails extends StatefulWidget {
   final int contact;
   final String specialization;
   final String clinic;
+  final double latitude;
+  final double longitude;
 
   // final GeoPoint location;
 
-  DoctorDetails({this.name, this.contact, this.specialization, this.clinic});
+  DoctorDetails({this.name,
+    this.contact,
+    this.specialization,
+    this.clinic,
+    this.longitude,
+    this.latitude});
 
   @override
   _DoctorDetailsState createState() => _DoctorDetailsState();
 }
 
 class _DoctorDetailsState extends State<DoctorDetails> {
+  var docs = [];
+  Set<Marker> _markers = {};
+
+  GoogleMapController googleMapController;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,10 +63,37 @@ class _DoctorDetailsState extends State<DoctorDetails> {
               title: Text(widget.clinic),
               leading: Icon(Icons.local_hospital),
             ),
-            ListTile(
-              title: Text("widget.location.toString()"),
+            Divider(color: Colors.black, thickness: 1),
+            SizedBox(height: 10),
+            Container(
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.45,
+              width: double.infinity,
+              child: GoogleMap(
+                markers: _markers,
+                compassEnabled: true,
+                myLocationEnabled: true,
+                myLocationButtonEnabled: true,
+                mapType: MapType.normal,
+                onMapCreated: (controller) {
+                  setState(() {
+                    googleMapController = controller;
+                    _markers.add(
+                      Marker(
+                        markerId: MarkerId('Clinic'),
+                        position: LatLng(widget.latitude, widget.longitude),
+                        infoWindow: InfoWindow(title: widget.name),
+                      ),
+                    );
+                  });
+                },
+                initialCameraPosition: CameraPosition(
+                    target: LatLng(widget.latitude, widget.longitude),
+                    zoom: 10),
+              ),
             ),
-            Divider(color: Colors.black, thickness: 1)
           ],
         ),
       ),

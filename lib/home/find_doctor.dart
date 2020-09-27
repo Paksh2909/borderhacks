@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:hackathon_app/api/user_api.dart';
 import 'package:hackathon_app/globalconstants/constants.dart';
 import 'package:hackathon_app/models/doctor.dart';
@@ -36,6 +35,7 @@ class _FindDoctorState extends State<FindDoctor> {
     UserNotifier userNotifier =
         Provider.of<UserNotifier>(context, listen: false);
     await getUserFromFirestore(authNotifier.user, userNotifier);
+
     setState(() {
       _isLoading = false;
     });
@@ -80,8 +80,6 @@ class _FindDoctorState extends State<FindDoctor> {
   _buildAppBar(double height, double width) {
     UserNotifier userNotifier =
         Provider.of<UserNotifier>(context, listen: false);
-    AuthNotifier authNotifier =
-        Provider.of<AuthNotifier>(context, listen: false);
 
     return Container(
       height: height * 0.20,
@@ -175,16 +173,15 @@ class _FindDoctorState extends State<FindDoctor> {
       child: ListView.separated(
         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 40),
         itemCount:
-        _searchedDocs.isEmpty ? docList.length : _searchedDocs.length,
-        itemBuilder: (context, index) =>
-            _buildCourseListItem(
-                (_searchedDocs.isEmpty ? docList : _searchedDocs), index),
+            _searchedDocs.isEmpty ? docList.length : _searchedDocs.length,
+        itemBuilder: (context, index) => _buildDoctorListItem(
+            (_searchedDocs.isEmpty ? docList : _searchedDocs), index),
         separatorBuilder: (context, index) => SizedBox(height: 30),
       ),
     );
   }
 
-  _buildCourseListItem(Map<int, Doctor> docs, int index) {
+  _buildDoctorListItem(Map<int, Doctor> docs, int index) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -196,6 +193,8 @@ class _FindDoctorState extends State<FindDoctor> {
                       contact: docs[index].contact,
                       specialization: docs[index].specialization,
                       clinic: docs[index].clinic,
+                      latitude: docs[index].latitude,
+                      longitude: docs[index].longitude,
                     )));
       },
       child: Container(

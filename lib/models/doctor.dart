@@ -1,4 +1,3 @@
-import 'package:geopoint/geopoint.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'doctor.g.dart';
@@ -17,21 +16,19 @@ class Doctor {
   @JsonKey(defaultValue: '')
   final String clinic;
 
-  // @JsonKey(fromJson: _fromJsonGeoPoint, toJson: _toJsonGeoPoint)
-  // GeoPoint location;
-  //
-  // static GeoPoint _fromJsonGeoPoint(GeoPoint geoPoint) {
-  //   return geoPoint;
-  // }
-  //
-  // static GeoPoint _toJsonGeoPoint(GeoPoint geoPoint) {
-  //   return geoPoint;
-  // }
+  @JsonKey(defaultValue: 0)
+  final double latitude;
+
+  @JsonKey(defaultValue: 0)
+  final double longitude;
+
   Doctor({
     this.name,
     this.specialization,
     this.contact,
     this.clinic,
+    this.latitude,
+    this.longitude,
   });
 
   factory Doctor.fromJson(Map<String, dynamic> json) => _$DoctorFromJson(json);
