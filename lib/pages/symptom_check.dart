@@ -26,13 +26,12 @@ class _SymptomCheckState extends State<SymptomCheck> {
       setState(() {
         diseaseFetched = false;
       });
-      symptoms.add(symptom1);
-      symptoms.add(symptom2);
-      symptoms.add(symptom3);
-      symptoms.add(symptom4);
-      symptoms.add(symptom5);
+      symptoms.add(symptom1.toLowerCase());
+      symptoms.add(symptom2.toLowerCase());
+      symptoms.add(symptom3.toLowerCase());
+      symptoms.add(symptom4.toLowerCase());
+      symptoms.add(symptom5.toLowerCase());
       disList = await getDiseases(symptoms);
-      print(disList);
       setState(() {
         diseaseFetched = true;
       });
@@ -51,117 +50,145 @@ class _SymptomCheckState extends State<SymptomCheck> {
                 bottomLeft: Radius.circular(20),
                 bottomRight: Radius.circular(20))),
       ),
-      body: Form(
-        key: _formKey,
-        child: Padding(
-          padding: EdgeInsets.all(10),
-          child: diseaseFetched
-              ? Column(
-                  children: [_buildDiseaseLists()],
-                )
-              : Column(
-                  children: [
-                    TextFormField(
-                      onChanged: (val) {
-                        setState(() {
-                          symptom1 = val.trim();
-                        });
-                      },
-                      validator: (val) {
-                        if (val.isEmpty || val == '') {
-                          return "Field cannot be empty";
-                        } else {
-                          return null;
-                        }
-                      },
-                      decoration: InputDecoration(
-                        hintText: "Enter symptom 1",
-                      ),
+      body: Column(
+        children: [
+          Form(
+            key: _formKey,
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: diseaseFetched
+                  ? Column(
+                      children: [_buildDiseaseLists()],
+                    )
+                  : Column(
+                      children: [
+                        TextFormField(
+                          onChanged: (val) {
+                            setState(() {
+                              symptom1 = val.trim();
+                            });
+                          },
+                          validator: (val) {
+                            if (val.isEmpty || val == '') {
+                              return "Field cannot be empty";
+                            } else {
+                              return null;
+                            }
+                          },
+                          decoration: InputDecoration(
+                            hintText: "Enter symptom 1",
+                          ),
+                        ),
+                        TextFormField(
+                          onChanged: (val) {
+                            setState(() {
+                              symptom2 = val.trim();
+                            });
+                          },
+                          validator: (val) {
+                            if (val.isEmpty || val == '') {
+                              return "Field cannot be empty";
+                            } else {
+                              return null;
+                            }
+                          },
+                          decoration: InputDecoration(
+                            hintText: "Enter symptom 2",
+                          ),
+                        ),
+                        TextFormField(
+                          onChanged: (val) {
+                            setState(() {
+                              symptom2 = val.trim();
+                            });
+                          },
+                          validator: (val) {
+                            if (val.isEmpty || val == '') {
+                              return "Field cannot be empty";
+                            } else {
+                              return null;
+                            }
+                          },
+                          decoration: InputDecoration(
+                            hintText: "Enter symptom 3",
+                          ),
+                        ),
+                        TextFormField(
+                          onChanged: (val) {
+                            if (val.isNotEmpty) {
+                              setState(() {
+                                symptom4 = val.trim();
+                              });
+                            }
+                          },
+                          decoration: InputDecoration(
+                            hintText: "Enter symptom 4",
+                          ),
+                        ),
+                        TextFormField(
+                          onChanged: (val) {
+                            if (val.isNotEmpty) {
+                              setState(() {
+                                symptom5 = val.trim();
+                              });
+                            }
+                          },
+                          decoration: InputDecoration(
+                            hintText: "Enter symptom 5",
+                          ),
+                        ),
+                        FlatButton(
+                          color: greenColor,
+                          onPressed: getDiseaseList,
+                          child: Text("Button"),
+                        ),
+                      ],
                     ),
-                    TextFormField(
-                      onChanged: (val) {
-                        setState(() {
-                          symptom2 = val.trim();
-                        });
-                      },
-                      validator: (val) {
-                        if (val.isEmpty || val == '') {
-                          return "Field cannot be empty";
-                        } else {
-                          return null;
-                        }
-                      },
-                      decoration: InputDecoration(
-                        hintText: "Enter symptom 2",
-                      ),
-                    ),
-                    TextFormField(
-                      onChanged: (val) {
-                        setState(() {
-                          symptom2 = val.trim();
-                        });
-                      },
-                      validator: (val) {
-                        if (val.isEmpty || val == '') {
-                          return "Field cannot be empty";
-                        } else {
-                          return null;
-                        }
-                      },
-                      decoration: InputDecoration(
-                        hintText: "Enter symptom 3",
-                      ),
-                    ),
-                    TextFormField(
-                      onChanged: (val) {
-                        if (val.isNotEmpty) {
-                          setState(() {
-                            symptom4 = val.trim();
-                          });
-                        }
-                      },
-                      decoration: InputDecoration(
-                        hintText: "Enter symptom 4",
-                      ),
-                    ),
-                    TextFormField(
-                      onChanged: (val) {
-                        if (val.isNotEmpty) {
-                          setState(() {
-                            symptom5 = val.trim();
-                          });
-                        }
-                      },
-                      decoration: InputDecoration(
-                        hintText: "Enter symptom 5",
-                      ),
-                    ),
-                    FlatButton(
-                      color: greenColor,
-                      onPressed: getDiseaseList,
-                      child: Text("Button"),
-                    ),
-                  ],
-                ),
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
   _buildDiseaseLists() {
-    return Expanded(
+    return Container(
+      height: MediaQuery
+          .of(context)
+          .size
+          .height * 0.75,
       child: ListView.separated(
           itemBuilder: (context, index) =>
               _buildDiseaseListItem(disList, index),
-          separatorBuilder: (context, index) => SizedBox(height: 30),
+          separatorBuilder: (context, index) => SizedBox(height: 15),
           itemCount: disList.length),
     );
   }
 
   _buildDiseaseListItem(List disList, int index) {
-    return Padding(
-      padding: EdgeInsets.all(10),
-      child: ListTile(title: disList[index]["name"]),
+    return Container(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: ListTile(
+          title: Text(
+            disList[index]["name"],
+            style: Theme
+                .of(context)
+                .textTheme
+                .headline6,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.grey,
+          width: 1.2,
+        ),
+        borderRadius: BorderRadius.all(
+          Radius.circular(12),
+        ),
+      ),
     );
   }
 }
