@@ -31,63 +31,63 @@ firebase.auth().onAuthStateChanged(user => {
     }
 })
 // register form
-// registerForm.addEventListener('submit', (e) => {
-//   e.preventDefault();
-  
-//   const email = registerForm.email.value;
-//   const password = registerForm.password.value;
-//   const name = registerForm.name.value;
-//   const latitude = registerForm.latitude.value;
-//   const longitude = registerForm.longitude.value;
-
-//   firebase.auth().createUserWithEmailAndPassword(email, password)
-//     .then(userData => {
-//       console.log('registered', userData);
-//       if(userData) {
-//       var user = firebase.auth().currentUser;
-    //   user.updateProfile({
-    //       displayName: name,
-    //       displayLat: latitude,
-    //       displayLong: longitude,
-    //   })
-    //   .then(()=> {
-    //       firebase.firestore().collection('pharmacies').doc(user.uid).set({
-    //           name: user.displayName,
-    //           latitude: user.displayLat,
-    //           longitude: user.displayLong,
-    //       })
-    //       sendVerificationEmail(user);
-    //       const modal = document.querySelector('#register');
-    //       M.Modal.getInstance(modal).close();
-    //       registerForm.reset();
-    //       sidenavDissmiss();
-    //       window.location.reload();
-    //   })
-//       registerForm.reset();
-//     }
-//     })
-//     .catch(error => {
-//       registerForm.querySelector('.error').textContent = error.message;
-//     });
-// });
-
-
-//New Regi
 registerForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    const email = registerForm.email.value;
-    const password = registerForm.password.value;
+  e.preventDefault();
   
-    firebase.auth().createUserWithEmailAndPassword(email, password)
-      .then(user => {
-        console.log('registered', user);
-        registerForm.reset();
+  const email = registerForm.email.value;
+  const password = registerForm.password.value;
+  const name = registerForm.name.value;
+  const latitude = registerForm.latitude.value;
+  const longitude = registerForm.longitude.value;
+
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then(userData => {
+      console.log('registered', userData);
+      if(userData) {
+      var user = firebase.auth().currentUser;
+      user.updateProfile({
+          displayName: name,
+          // displayLat: latitude,
+          // displayLong: longitude,
       })
-      .catch(error => {
-        registerForm.querySelector('.error').textContent = error.message;
-      });
-  });
+      
+          firebase.firestore().collection('pharmacies').doc(user.uid).add({
+              name: user.displayName,
+              latitude: latitude,
+              longitude: longitude,
+          })
+          sendVerificationEmail(user);
+          const modal = document.querySelector('#register');
+          M.Modal.getInstance(modal).close();
+          registerForm.reset();
+          sidenavDissmiss();
+          window.location.reload();
+      }
+      registerForm.reset();
+    
+    })
+    .catch(error => {
+      registerForm.querySelector('.error').textContent = error.message;
+    });
+});
+
+
+// //New Regi
+// registerForm.addEventListener('submit', (e) => {
+//     e.preventDefault();
+    
+//     const email = registerForm.email.value;
+//     const password = registerForm.password.value;
+  
+//     firebase.auth().createUserWithEmailAndPassword(email, password)
+//       .then(user => {
+//         console.log('registered', user);
+//         registerForm.reset();
+//       })
+//       .catch(error => {
+//         registerForm.querySelector('.error').textContent = error.message;
+//       });
+//   });
 
 // login form
 loginForm.addEventListener('submit', (e) => {
